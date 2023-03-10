@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-export default function UploadFileField({ label, Icon,type }) {
+export default function UploadFileField({ label, Icon,type, onChange }) {
   const inputRef = useRef(null);
   const handleOpenFile = (e) => {
     inputRef.current.click();
@@ -14,7 +14,7 @@ export default function UploadFileField({ label, Icon,type }) {
       >
         <Icon width={60} height={60} />
       </div>
-      <input type="file" className="hidden" ref={inputRef} />
+      <input type="file" onChange={onChange} className="hidden" ref={inputRef} />
     </div>
   );
 }

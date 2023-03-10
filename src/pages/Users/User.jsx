@@ -1,9 +1,16 @@
-import { Link } from "react-router-dom";
-import Pdf from "../../components/Icons/Pdf/Pdf";
+import { useEffect, useState } from "react";
 import Pagination from "../../components/Pagination/Pagination";
 import Searchbar from "../../components/Searchbar/Searchbar";
 
 export default function User() {
+
+  const [users, setUsers] = useState([])
+  useEffect(async () => {
+    let res = await fetch('/api/User/');
+    res = res.json();
+    setUsers(res);
+  }, []);
+
   return (
     <div className="px-10 pt-12 pb-5">
       <div className="flex flex-col md:flex-row md:justify-between gap-2">
@@ -21,33 +28,26 @@ export default function User() {
                 Email ID
               </th>
               <th className="text-left py-3 px-5 border-r-2 text-lg font-semibold tracking-wide whitespace-nowrap">
-                Active Plan
+                Created At
               </th>
             </tr>
           </thead>
           <tbody className="border-x-[2px] border-b-[2px] border-gray-200">
-            <tr>
-              <td className="border-r-2 py-3 px-5 text-left tracking-wide  whitespace-nowrap">
-                Rohit Sharma
-              </td>
-              <td className="border-r-2 py-3 px-5 text-left tracking-wide whitespace-nowrap">
-                rohit@gmail.com
-              </td>
-              <td className="border-r-2 py-3 px-5 text-left tracking-wide whitespace-nowrap">
-                NA
-              </td>
-            </tr>
-            <tr>
-              <td className="border-r-2 py-3 px-5 text-left tracking-wide  whitespace-nowrap">
-                Rohan Das
-              </td>
-              <td className="border-r-2 py-3 px-5 text-left tracking-wide whitespace-nowrap">
-                rohan@gmail.com
-              </td>
-              <td className="border-r-2 py-3 px-5 text-left tracking-wide whitespace-nowrap">
-                Single Download $10
-              </td>
-            </tr>
+            {users.map(user => {
+              return (
+                <tr>
+                  <td className="border-r-2 py-3 px-5 text-left tracking-wide  whitespace-nowrap">
+                    {user.name}
+                  </td>
+                  <td className="border-r-2 py-3 px-5 text-left tracking-wide whitespace-nowrap">
+                    {user.email}
+                  </td>
+                  <td className="border-r-2 py-3 px-5 text-left tracking-wide whitespace-nowrap">
+                    {user.created_at}
+                  </td>
+                </tr>
+              )
+            })}            
           </tbody>
         </table>
       </div>

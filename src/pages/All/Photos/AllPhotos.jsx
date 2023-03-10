@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import FIleIcon from "../../../components/Icons/File/FIleIcon";
 import Image from "../../../components/Icons/Image/Image";
@@ -6,6 +6,59 @@ import Pagination from "../../../components/Pagination/Pagination";
 import Searchbar from "../../../components/Searchbar/Searchbar";
 
 export default function AllPhotos() {
+  const [images, setImages] = useState([])
+  useEffect(() => {
+    async function  fetchProduct() {
+      let res = await fetch('/api/Product/photos');
+      res = await res.json();
+      setImages(res);
+    }
+    fetchProduct();
+    
+  }, []);
+
+  function prepareList(image, index) {
+    return (
+      <tr>
+          <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
+            {index}
+          </td>
+          <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
+            {image.id}
+          </td>
+          <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
+            {image.title}
+          </td>
+          <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
+            {image.description}
+          </td>
+          <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
+            {image.tags}
+          </td>
+          
+          <td className=" p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
+            <div className="flex justify-center">
+              <Image height={70} src={image.small_link}/>
+            </div>
+          </td>
+          <td className="text-center p-3 border-[1px] w-28 border-slate-300 tracking-wide  whitespace-nowrap">
+            <div className="flex justify-between items-center gap-2 h-full">
+              <Link to="/edit-photo">
+                <button className="flex gap-1 rounded-[3px] bg-blue-600 py-1 px-2 items-center ">
+                  <FIleIcon height={15} color="white" />
+                  <p className="text-white text-sm font-extralight">Edit</p>
+                </button>
+              </Link>
+              <button className="flex gap-1 rounded-[3px] bg-orange-600 py-1 px-2 items-center ">
+                <FIleIcon height={15} color="white" />
+                <p className="text-white text-sm font-extralight">Delete</p>
+              </button>
+            </div>
+          </td>
+      </tr>
+    )
+  }
+  
   return (
     <div className="px-10 pt-12 pb-5">
       <div className="flex flex-col md:flex-row md:justify-between gap-2">
@@ -32,9 +85,6 @@ export default function AllPhotos() {
                 Tags
               </th>
               <th className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                Resolution
-              </th>
-              <th className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
                 Thumbnail
               </th>
               <th className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
@@ -43,84 +93,7 @@ export default function AllPhotos() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                1
-              </td>
-              <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                9244645
-              </td>
-              <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                Apple in tree
-              </td>
-              <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                Apple in tree
-              </td>
-              <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                Apple,Tree
-              </td>
-              <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                1920 X 1080
-              </td>
-              <td className=" p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                <div className="flex justify-center">
-                  <Image height={70} />
-                </div>
-              </td>
-              <td className="text-center p-3 border-[1px] w-28 border-slate-300 tracking-wide  whitespace-nowrap">
-                <div className="flex justify-between items-center gap-2 h-full">
-                  <Link to="/edit-photo">
-                    <button className="flex gap-1 rounded-[3px] bg-blue-600 py-1 px-2 items-center ">
-                      <FIleIcon height={15} color="white" />
-                      <p className="text-white text-sm font-extralight">Edit</p>
-                    </button>
-                  </Link>
-                  <button className="flex gap-1 rounded-[3px] bg-orange-600 py-1 px-2 items-center ">
-                    <FIleIcon height={15} color="white" />
-                    <p className="text-white text-sm font-extralight">Delete</p>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                1
-              </td>
-              <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                9244645
-              </td>
-              <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                Apple in tree
-              </td>
-              <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                Apple in tree
-              </td>
-              <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                Apple,Tree
-              </td>
-              <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                1920 X 1080
-              </td>
-              <td className=" p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                <div className="flex justify-center">
-                  <Image height={70} />
-                </div>
-              </td>
-              <td className="text-center p-3 border-[1px] w-28 border-slate-300 tracking-wide  whitespace-nowrap">
-                <div className="flex justify-between items-center gap-2 h-full">
-                  <Link to="/edit-photo">
-                    <button className="flex gap-1 rounded-[3px] bg-blue-600 py-1 px-2 items-center ">
-                      <FIleIcon height={15} color="white" />
-                      <p className="text-white text-sm font-extralight">Edit</p>
-                    </button>
-                  </Link>
-                  <button className="flex gap-1 rounded-[3px] bg-orange-600 py-1 px-2 items-center ">
-                    <FIleIcon height={15} color="white" />
-                    <p className="text-white text-sm font-extralight">Delete</p>
-                  </button>
-                </div>
-              </td>
-            </tr>
+            {images.length > 0 && images.map((image, index) => prepareList(image, index))}
           </tbody>
         </table>
       </div>
