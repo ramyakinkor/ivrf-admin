@@ -17,7 +17,8 @@ import ViewReceipt from "./pages/ViewReceipt/ViewReceipt";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Router>
+    {/* base name here is required to use in different url */}
+    <Router basename={'/admin/'}>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />}>

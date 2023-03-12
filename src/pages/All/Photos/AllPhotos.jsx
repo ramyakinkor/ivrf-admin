@@ -7,6 +7,7 @@ import Searchbar from "../../../components/Searchbar/Searchbar";
 
 export default function AllPhotos() {
   const [images, setImages] = useState([])
+  let x = 0;
   useEffect(() => {
     async function  fetchProduct() {
       let res = await fetch('/api/Product/photos');
@@ -15,7 +16,18 @@ export default function AllPhotos() {
     }
     fetchProduct();
     
-  }, []);
+  }, [x]);
+
+  async function deleteProduct(id) {
+    let res = await fetch({
+      url: `/api/Product/${id}`,
+      method: 'delete',
+    })
+    res = await res.json();
+    console.log(res);
+    x++;
+
+  }
 
   function prepareList(image, index) {
     return (
@@ -38,7 +50,7 @@ export default function AllPhotos() {
           
           <td className=" p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
             <div className="flex justify-center">
-              <Image height={70} src={image.small_link}/>
+              <Image height={70} src={image.public}/>
             </div>
           </td>
           <td className="text-center p-3 border-[1px] w-28 border-slate-300 tracking-wide  whitespace-nowrap">
@@ -49,7 +61,7 @@ export default function AllPhotos() {
                   <p className="text-white text-sm font-extralight">Edit</p>
                 </button>
               </Link>
-              <button className="flex gap-1 rounded-[3px] bg-orange-600 py-1 px-2 items-center ">
+              <button className="flex gap-1 rounded-[3px] bg-orange-600 py-1 px-2 items-center " onClick={deleteProduct(image.id)}>
                 <FIleIcon height={15} color="white" />
                 <p className="text-white text-sm font-extralight">Delete</p>
               </button>

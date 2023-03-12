@@ -18,13 +18,13 @@ export default function PhotoUpload() {
   function submit(event) {
     event.preventDefault();
     const form = new FormData()
-    form.append('private_images', originalFile.files[0], originalFile.files[0].name);
-    form.append('public_images', thumbnailFile.files[0], originalFile.files[0].name);
+    form.append('private_assets', originalFile.files[0], originalFile.files[0].name);
+    form.append('public_assets', thumbnailFile.files[0], originalFile.files[0].name);
     form.append('title', title.value);
     form.append('tags', tags.value);
     form.append('category', category.value);
     form.append('description', desc.value);
-    fetch("api/Product", {
+    fetch("api/Product/image", {
       body: form,
       method: "post",
     })
