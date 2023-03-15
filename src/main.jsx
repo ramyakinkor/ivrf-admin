@@ -14,11 +14,12 @@ import Settings from "./pages/settings/Settings";
 import EditVideo from "./pages/Edit/Video/EditVideo";
 import EditPhoto from "./pages/Edit/Photo/EditPhoto";
 import ViewReceipt from "./pages/ViewReceipt/ViewReceipt";
+import { environments } from "./hooks/environments";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     {/* base name here is required to use in different url */}
-    <Router basename={'/admin/'}>
+    <Router basename={environments.subdomain}>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />}>

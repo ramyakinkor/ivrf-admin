@@ -2,6 +2,7 @@ import React from "react";
 import FolderUp from "../../../components/Icons/FolderUp/FolderUp";
 import { useFormFile } from "../../../hooks/fileField";
 import { useFormField } from "../../../hooks/formField";
+import { useProduct } from "../../../hooks/product";
 import InputField from "../InputField";
 import UploadFileField from "../UploadFileField";
 
@@ -12,6 +13,7 @@ export default function PhotoUpload() {
   const category = useFormField('');
   const thumbnailFile = useFormFile('');
   const originalFile = useFormFile('');
+  const product = useProduct();
 
 
 
@@ -19,17 +21,19 @@ export default function PhotoUpload() {
     event.preventDefault();
     const form = new FormData()
     form.append('private_assets', originalFile.files[0], originalFile.files[0].name);
-    form.append('public_assets', thumbnailFile.files[0], originalFile.files[0].name);
+    form.append('public_assets', thumbnailFile.files[0], thumbnailFile.files[0].name);
     form.append('title', title.value);
     form.append('tags', tags.value);
     form.append('category', category.value);
     form.append('description', desc.value);
-    fetch("api/Product/image", {
-      body: form,
-      method: "post",
-    })
-    .then(res => res.json())
-    .then(res => console.log(res));
+    product.addImage(form).then(res => {
+      tags.reset();
+      title.reset();
+      desc.reset();
+      category.reset();
+      thumbnailFile.reset();
+      originalFile.reset();
+    });
   }
   return (
     <div className=" px-10 pt-12 pb-5 ">
