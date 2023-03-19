@@ -12,7 +12,7 @@ export default function Header() {
   useToggleResize(setToggle, dimensions);
   return (
     <>
-      <div className="text-center sticky top-0 flex items-center justify-between md:justify-center px-2 text-xl bg-[#d9d9d9] py-6 ">
+      <div className="text-center sticky z-30 top-0 flex items-center justify-between md:justify-center px-2 text-xl bg-[#d9d9d9] py-6 ">
         IVRFootage ADMIN PANEL
         {!toggle && (
           <div

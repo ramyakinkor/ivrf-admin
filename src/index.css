@@ -7,7 +7,7 @@
   width: 100%;
   top:0;
   overflow: hidden;
-  z-index:10
+  z-index:100
 }
 .slideIn{
     animation: slide 500ms ease forwards;

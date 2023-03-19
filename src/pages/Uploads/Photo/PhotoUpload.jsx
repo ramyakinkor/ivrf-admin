@@ -67,14 +67,16 @@ export default function PhotoUpload() {
           label={"Photo Resolution"}
           placeholder="1280 X 1920 (Admin will Type the Resolution)"
         /> */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <UploadFileField {...thumbnailFile}
             label={"Upload Thumbnail (with Watermark)"}
-            Icon={FolderUp}
+            Icon={FolderUp} 
+            type='image'
           />
           <UploadFileField {...originalFile}
             label={"Upload Photo (without Watermark)"}
             Icon={FolderUp}
+            type='image'
           />
         </div>
         <div className="flex justify-center ">

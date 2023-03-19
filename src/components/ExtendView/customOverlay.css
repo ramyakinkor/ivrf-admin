@@ -1,0 +1,41 @@
+.customOverlay {
+
+  background-color: rgba(0, 0, 0, 0.7);
+  
+}
+
+.customModal {
+  max-height: 800px;
+  background: none;
+  box-shadow: none;
+  position: relative;
+  padding: 0;
+  margin: 1.2em;
+}
+
+.center{
+  left: 50%;
+  top:50%;
+  transform: translate(-50%,-50%);
+}
+
+.customModal::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes customEnterOverlayAnimation {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes customLeaveOverlayAnimation {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}

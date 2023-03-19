@@ -1,8 +1,18 @@
 import FolderUp from "../../../components/Icons/FolderUp/FolderUp";
 import InputField from "../InputField";
 import UploadFileField from "../UploadFileField";
-
+import { useFormFile } from "../../../hooks/fileField";
+import { useFormField } from "../../../hooks/formField";
+import { useProduct } from "../../../hooks/product";
 export default function UploadVideo() {
+  const tags = useFormField("");
+  const title = useFormField("");
+  const desc = useFormField("");
+  const category = useFormField("");
+  const thumbnailFile = useFormFile("");
+  const originalFile = useFormFile("");
+  const product = useProduct();
+
   return (
     <div className=" px-10 pt-12 pb-5 ">
       <h1 className="text-2xl font-bold">UPLOAD NEW VIDEO</h1>
@@ -40,12 +50,16 @@ export default function UploadVideo() {
         />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
           <UploadFileField
+            {...thumbnailFile}
             label={"Upload Video Thumbnail (with Watermark)"}
             Icon={FolderUp}
+            type="video"
           />
           <UploadFileField
+            {...originalFile}
             label={"Upload Video (without Watermark)"}
             Icon={FolderUp}
+            type="video"
           />
         </div>
         <div className="flex justify-center ">
