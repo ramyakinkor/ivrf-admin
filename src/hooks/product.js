@@ -12,7 +12,18 @@ export const useProduct = () => {
     return res;
   }
 
+  const addVideo = async (form) => {
+    const url = `/api/Product/video`
+    let res = await fetch(url, {
+      body: form,
+      method: "post",
+    })
+    res = await res.json();
+    return res;
+  }
+
   return {
-    addImage
+    addImage,
+    addVideo
   }
 }

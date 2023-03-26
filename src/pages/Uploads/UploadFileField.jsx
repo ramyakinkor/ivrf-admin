@@ -12,7 +12,7 @@ export default function UploadFileField({
   const [open, setOpen] = useState(false);
   const inputRef = useRef(null);
   const videoRef = useRef(null);
-  console.log(files);
+ 
   const OnOpenModal = () => setOpen(true);
   const OnCloseModal = () => setOpen(false);
   const handleOpenFile = (e) => {

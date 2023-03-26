@@ -4,14 +4,30 @@ import UploadFileField from "../UploadFileField";
 import { useFormFile } from "../../../hooks/fileField";
 import { useFormField } from "../../../hooks/formField";
 import { useProduct } from "../../../hooks/product";
+import { useForm } from "react-hook-form";
 export default function UploadVideo() {
-  const tags = useFormField("");
-  const title = useFormField("");
-  const desc = useFormField("");
-  const category = useFormField("");
-  const thumbnailFile = useFormFile("");
-  const originalFile = useFormFile("");
   const product = useProduct();
+  const {register, handleSubmit, control, setValue, reset, getValues,formState: {errors}} = useForm();
+     
+  function onSubmit(data, e) {
+    console.log(data, e)
+    const form = new FromData(data);
+    form.append('private_assets', data.private_assets.files[0], data.private_assets.files[0].name);
+    form.append('public_assets', data.public_assets.files[0], data.public_assets.files[0].name);
+    product.addVideo(form)
+    .then(res => {
+      alert('video upload success');
+      reset();
+    }).catch(err => {
+      console.log(err);
+      alert('some error ocurred please check logs');
+    })
+  }
+
+  function onError(errors, e) {
+    console.log(errors, e)
+    
+  }
 
   return (
     <div className=" px-10 pt-12 pb-5 ">
@@ -19,45 +35,45 @@ export default function UploadVideo() {
       <p className="trackig-wide text-xl mt-3 font-normal">
         All fields are mandatory
       </p>
-      <form className="space-y-5 mt-5">
-        <InputField
-          label="ID"
-          placeholder="Automatically generated ID (6-8 digit)"
-        />
+      <form className="space-y-5 mt-5" onSubmit={handleSubmit(onSubmit, onError)}>
+        {JSON.stringify(formState)}
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-          <div className="flex flex-col gap-2">
-            <label className="">Category</label>
-            <select className="py-3 pr-5 outline-none w-full text-xl px-3 text-black border-[1px] border-gray-300 font-light rounded-md">
-              <option value="">Categories List ( Defined categories)</option>
-              <option value="">one</option>
-              <option value="">two</option>
-            </select>
-          </div>
+          <InputField label="Video Title" 
+            {...register('title', {required: {value: true, message: 'title value required'}})}  
+            placeholder={"Title of Video"} 
+          />
+          {errors.title && <p style={{color: 'red'}}>{errors.title.message}</p>}
+
+          <InputField
+            label="Category"
+            register={register('category')}
+            placeholder={"Video Category"}
+          />
 
           <InputField
             label="Tags"
+            register={register('tags')}
             placeholder={"Upto 10 Tags Separated by Comma"}
           />
-          <InputField label="Video Title" placeholder={"Title of Video"} />
+          
           <InputField
             label="Video Description"
+            register = {register('description')}
             placeholder={"Description of Video"}
           />
         </div>
-        <InputField
-          label={"Video Resolution"}
-          placeholder="HD / Full HD / 4K (Admin will select the Resolution)"
-        />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
           <UploadFileField
-            {...thumbnailFile}
+            onChange={(event) => setValue('public_assets', event.target.files)}
+            files={getValues('public_assets') || []}
             label={"Upload Video Thumbnail (with Watermark)"}
             Icon={FolderUp}
             type="video"
           />
           <UploadFileField
-            {...originalFile}
             label={"Upload Video (without Watermark)"}
+            onChange={(event) => setValue('private_assets', event.target.files)}
+            files={getValues('private_assets') || []}
             Icon={FolderUp}
             type="video"
           />
