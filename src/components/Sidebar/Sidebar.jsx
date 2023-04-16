@@ -93,15 +93,6 @@ export default function Sidebar() {
           </Link>
         </div>
       </div>
-      <Link to="/order-history">
-        <SidebarItem
-          tracks={tracks}
-          clickedFor={"orderHistory"}
-          handleClick={handleSwitchRoutes}
-          Icon={CategoryIcon}
-          title="Order History"
-        />
-      </Link>
       <Link to="/all-photos">
         <SidebarItem
           tracks={tracks}
@@ -120,7 +111,7 @@ export default function Sidebar() {
           title="All Videos"
         />
       </Link>
-      <Link to="/users">
+      {/* <Link to="/users">
         <SidebarItem
           tracks={tracks}
           clickedFor={"users"}
@@ -128,7 +119,7 @@ export default function Sidebar() {
           Icon={CategoryIcon}
           title="Users"
         />
-      </Link>
+      </Link> */}
       <Link to="/settings">
         <SidebarItem
           tracks={tracks}

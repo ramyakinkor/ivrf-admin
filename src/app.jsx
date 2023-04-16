@@ -13,9 +13,9 @@ import EditVideo from "./pages/Edit/Video/EditVideo";
 import EditPhoto from "./pages/Edit/Photo/EditPhoto";
 import ViewReceipt from "./pages/ViewReceipt/ViewReceipt";
 import { environments } from "./hooks/environments";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getProfile } from "./store/reducers/AdminSlice";
-import { getAllImages, getAllProducts, getAllVideos } from "./store/reducers/ProductSlice";
+import { getAllImages, getAllVideos } from "./store/reducers/ProductSlice";
 
 function App() {
   const dispatch = useDispatch();

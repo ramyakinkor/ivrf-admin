@@ -1,100 +1,156 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import FIleIcon from "../../../components/Icons/File/FIleIcon";
-import Image from "../../../components/Icons/Image/Image";
-import Pagination from "../../../components/Pagination/Pagination";
-import Searchbar from "../../../components/Searchbar/Searchbar";
+import { SearchOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Button, Input, Space, Table } from 'antd';
+import { useRef, useState } from 'react';
+import Highlighter from 'react-highlight-words';
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct } from "../../../store/reducers/ProductSlice";
-
 export default function AllPhotos() {
 
   const images = useSelector(state => state.product.images)
   const dispatch = useDispatch();
-
-  function prepareList(image, index) {
-    return (
-      <tr>
-          <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-            {index}
-          </td>
-          <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-            {image.id}
-          </td>
-          <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-            {image.title}
-          </td>
-          <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-            {image.description}
-          </td>
-          <td className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-            {image.tags}
-          </td>
-          
-          <td className=" p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-            <div className="flex justify-center">
-              <Image height={70} src={image.public}/>
-            </div>
-          </td>
-          <td className="text-center p-3 border-[1px] w-28 border-slate-300 tracking-wide  whitespace-nowrap">
-            <div className="flex justify-between items-center gap-2 h-full">
-              <Link to="/edit-photo">
-                <button className="flex gap-1 rounded-[3px] bg-blue-600 py-1 px-2 items-center ">
-                  <FIleIcon height={15} color="white" />
-                  <p className="text-white text-sm font-extralight">Edit</p>
-                </button>
-              </Link>
-              <button className="flex gap-1 rounded-[3px] bg-orange-600 py-1 px-2 items-center " onClick={() => dispatch(deleteProduct(image.id))}>
-                <FIleIcon height={15} color="white" />
-                <p className="text-white text-sm font-extralight">Delete</p>
-              </button>
-            </div>
-          </td>
-      </tr>
-    )
-  }
-  
-  return (
-    <div className="px-10 pt-12 pb-5">
-      <div className="flex flex-col md:flex-row md:justify-between gap-2">
-        <h1 className="text-2xl font-bold">ALL UPLOADED PHOTOS</h1>
-        <Searchbar placeholder={"Search Photo..."} />
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+  const searchInput = useRef(null);
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText('');
+  };
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: 'block',
+          }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({
+                closeDropdown: false,
+              });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Filter
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button>
+        </Space>
       </div>
-      <div className="overflow-auto  mt-8 ">
-        <table className="min-w-full ">
-          <thead>
-            <tr className="bg-[#c9daf8] ">
-              <th className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                Sl No
-              </th>
-              <th className="text-center p-3 border-[1px] border-slate-300 tracking-wide  whitespace-nowrap">
-                ID
-              </th>
-              <th className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                Title
-              </th>
-              <th className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                Description
-              </th>
-              <th className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                Tags
-              </th>
-              <th className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                Thumbnail
-              </th>
-              <th className="text-center p-3 border-[1px] border-slate-300 tracking-wide whitespace-nowrap">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {images?.length > 0 && images.map((image, index) => prepareList(image, index))}
-          </tbody>
-        </table>
-      </div>
-      <div className="flex justify-end">
-        <Pagination />
-      </div>
-    </div>
-  );
-}
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? '#1890ff' : undefined,
+        }}
+      />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: '#ffc069',
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        text
+      ),
+  });
+  const columns = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+      width: '20%',
+      ...getColumnSearchProps('id'),
+    },
+    {
+      title: 'Title',
+      dataIndex: 'title',
+      key: 'title',
+      ...getColumnSearchProps('title'),
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
+      ...getColumnSearchProps('description'),
+    },
+    {
+      title: 'Tags',
+      dataIndex: 'tags',
+      key: 'tags',
+      ...getColumnSearchProps('tags'),
+    },
+    {
+      title: 'ThumbNail',
+      dataIndex: 'public',
+      key: 'public',
+    },
+    {
+      title: 'Action',
+      dataIndex: '',
+      key: 'x',
+      render: (text, record) => <Button type="primary" onClick={() => dispatch(deleteProduct(record.id))} icon={<DeleteOutlined />} />,
+    }
+  ];
+  return <Table columns={columns} dataSource={images} />;
+};

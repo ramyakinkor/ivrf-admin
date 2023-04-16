@@ -36,7 +36,6 @@ export default function UploadVideo() {
         All fields are mandatory
       </p>
       <form className="space-y-5 mt-5" onSubmit={handleSubmit(onSubmit, onError)}>
-        {JSON.stringify(formState)}
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
           <InputField label="Video Title" 
             {...register('title', {required: {value: true, message: 'title value required'}})}  
