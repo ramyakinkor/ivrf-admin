@@ -34,7 +34,7 @@ export default function UploadFileField({
             onClick={handleOpenFile}
             className="w-full cursor-pointer h-72 z-1  border-[1px] border-gray-300 rounded-md flex justify-center items-center"
           >
-            {files.length >= 1 && !open ? (
+            {files?.length >= 1 && !open ? (
               <div className="w-full flex justify-center relative items-center h-full">
                 {type == "image" ? (
                   <img
@@ -64,7 +64,7 @@ export default function UploadFileField({
             ref={inputRef}
           />
         </div>
-        {files.length >= 1 && (
+        {files?.length >= 1 && (
           <span
             onClick={OnOpenModal}
             className="inline-block absolute z-10 select-none cursor-pointer p-2 bg-slate-200 bottom-0 right-0"

@@ -4,30 +4,13 @@ import FIleIcon from "../../../components/Icons/File/FIleIcon";
 import Image from "../../../components/Icons/Image/Image";
 import Pagination from "../../../components/Pagination/Pagination";
 import Searchbar from "../../../components/Searchbar/Searchbar";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteProduct } from "../../../store/reducers/ProductSlice";
 
 export default function AllPhotos() {
-  const [images, setImages] = useState([])
-  let x = 0;
-  useEffect(() => {
-    async function  fetchProduct() {
-      let res = await fetch('/api/Product/photos');
-      res = await res.json();
-      setImages(res);
-    }
-    fetchProduct();
-    
-  }, [x]);
 
-  async function deleteProduct(id) {
-    let res = await fetch({
-      url: `/api/Product/${id}`,
-      method: 'delete',
-    })
-    res = await res.json();
-    console.log(res);
-    x++;
-
-  }
+  const images = useSelector(state => state.product.images)
+  const dispatch = useDispatch();
 
   function prepareList(image, index) {
     return (
@@ -61,7 +44,7 @@ export default function AllPhotos() {
                   <p className="text-white text-sm font-extralight">Edit</p>
                 </button>
               </Link>
-              <button className="flex gap-1 rounded-[3px] bg-orange-600 py-1 px-2 items-center " onClick={deleteProduct(image.id)}>
+              <button className="flex gap-1 rounded-[3px] bg-orange-600 py-1 px-2 items-center " onClick={() => dispatch(deleteProduct(image.id))}>
                 <FIleIcon height={15} color="white" />
                 <p className="text-white text-sm font-extralight">Delete</p>
               </button>
@@ -105,7 +88,7 @@ export default function AllPhotos() {
             </tr>
           </thead>
           <tbody>
-            {images.length > 0 && images.map((image, index) => prepareList(image, index))}
+            {images?.length > 0 && images.map((image, index) => prepareList(image, index))}
           </tbody>
         </table>
       </div>
