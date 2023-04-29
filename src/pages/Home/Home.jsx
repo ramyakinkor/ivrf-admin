@@ -8,7 +8,7 @@ export default function Home() {
   const profile = useSelector(state => state.admin.profile);
   return (
     <>
-      { profile ? (
+      { true ? (
         <div className="flex h-screen overflow-hidden">
           <Sidebar />
           <div className="w-full flex flex-col flex-grow h-screen overflow-y-scroll ">

@@ -83,12 +83,47 @@ export const updateProduct = createAsyncThunk(
   }
 )
 
+export const getProductCategories = createAsyncThunk(
+  'product/get/Category',
+  async ({id, data}, { rejectWithValue }) => {
+    try {
+      const response = await Product.getCategoryt();
+      return response.data
+    } catch(error) {
+      if (!error.response) {
+        throw err
+      }
+      return rejectWithValue(error.response.data)
+    }
+    
+  }
+)
+
+export const createProductCategory = createAsyncThunk(
+  'product/add/category',
+  async ({data, reset}, { rejectWithValue }) => {
+    try {
+      await Product.addCategory(data)
+      reset();
+      const response = await Product.getCategory();
+      return response.data;
+      
+    } catch(error) {
+      if (!error.response) {
+        throw err
+      }
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
 
 export const AdminSlice = createSlice({
     name: 'product',
     initialState:{
       images: [], 
       videos: [],
+      categories: [],
       error: undefined,
       isCreating: false,
       isDeleting: false
@@ -168,6 +203,21 @@ export const AdminSlice = createSlice({
           state.error = action.error.message
         }
         state.isDeleting = false;
+        return state;
+      })
+      builder.addCase(getProductCategories.rejected, (state, action) => {
+        if (action.payload) {
+          state.error = action.payload.errorMessage
+        } else {
+          state.error = action.error.message
+        }
+        return state;
+      })
+      builder.addCase(getProductCategories.fulfilled, (state, action) => {
+        state.categories = action.payload
+        return state;
+      })
+      builder.addCase(createProductCategory.fulfilled, (state, action) => {
         return state;
       })
     },

@@ -111,6 +111,15 @@ export default function Sidebar() {
           title="All Videos"
         />
       </Link>
+      <Link to="/category">
+        <SidebarItem
+          tracks={tracks}
+          clickedFor={"catgeory"}
+          handleClick={handleSwitchRoutes}
+          Icon={CategoryIcon}
+          title="Category"
+        />
+      </Link>
       {/* <Link to="/users">
         <SidebarItem
           tracks={tracks}

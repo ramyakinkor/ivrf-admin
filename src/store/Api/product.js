@@ -25,7 +25,16 @@ export default class Product {
   }
 
   static createProduct(data) {
-    return data.type === 'image' ? axios.post(CONSTANTS.CREATE_IMAGE, data) : axios.post(CONSTANTS.CREATE_VIDEO, data);
+    return data.type === 'image' ? axios.post(CONSTANTS.CREATE_IMAGE, data, { "Content-Type": "multipart/form-data" }) : axios.post(CONSTANTS.CREATE_VIDEO, data, { "Content-Type": "multipart/form-data" });
     
   }
+
+  static addCategory(data) {
+    return axios.post(CONSTANTS.CREATE_CATEGORY, data, { "Content-Type": "multipart/form-data" })
+  }
+
+  static getCategory() {
+    return axios.get(CONSTANTS.GET_CATEGORY)
+  }
+
 }

@@ -11,5 +11,9 @@ export const CONSTANTS = {
   GET_VIDEOS: '/api/Product/videos',
   CREATE_VIDEO: '/api/Product/video',
   GET_USERS: '/api/User/',
-  CREATE_SUBSCRIPTION_MODEL: '/api/subscriptionModel'
+  CREATE_SUBSCRIPTION_MODEL: '/api/subscriptionModel',
+  GET_CATEGORY: '/api/Category',
+  CREATE_CATEGORY: '/api/Category',
+  UPDATE_CATEGORY: '/api/Category',
+  DELETE_CATEGORY: '/api/Category/:id'
 }

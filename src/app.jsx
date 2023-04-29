@@ -16,6 +16,7 @@ import { environments } from "./hooks/environments";
 import { useDispatch } from "react-redux";
 import { getProfile } from "./store/reducers/AdminSlice";
 import { getAllImages, getAllVideos } from "./store/reducers/ProductSlice";
+import Category from "./pages/Category/category";
 
 function App() {
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ function App() {
           <Route path="edit-video" element={<EditVideo />} />
           <Route path="edit-photo" element={<EditPhoto />} />
           <Route path="view-receipt" element={<ViewReceipt />} />
+          <Route path="category" element={<Category />} />
         </Route>
       </Routes>
     </Router>
