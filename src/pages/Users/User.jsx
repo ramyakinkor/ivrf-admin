@@ -2,14 +2,23 @@ import { useEffect, useState } from "react";
 import Pagination from "../../components/Pagination/Pagination";
 import Searchbar from "../../components/Searchbar/Searchbar";
 
-export default function User() {
+export default function User1() {
 
   const [users, setUsers] = useState([])
-  useEffect(async () => {
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  async function fetchUser() {
+    try {
     let res = await fetch('/api/User/');
     res = res.json();
+    if (res.legnth > 0)
     setUsers(res);
-  }, []);
+    } catch(err) {
+      console.log(err);
+    }
+  }
 
   return (
     <div className="px-10 pt-12 pb-5">
@@ -33,7 +42,7 @@ export default function User() {
             </tr>
           </thead>
           <tbody className="border-x-[2px] border-b-[2px] border-gray-200">
-            {users.map(user => {
+            {users?.map(user => {
               return (
                 <tr>
                   <td className="border-r-2 py-3 px-5 text-left tracking-wide  whitespace-nowrap">

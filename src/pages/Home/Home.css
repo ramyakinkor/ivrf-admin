@@ -1,0 +1,17 @@
+.logo {
+  height: 38px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+  background-image: url('../../assets/logo/ivrf-logo.png');
+  background-size: 150px ;
+  background-size: cover;
+}
+  
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
+.ant-menu-item-selected, .ant-menu-item-active {
+  border-radius: 0 !important;
+}
+

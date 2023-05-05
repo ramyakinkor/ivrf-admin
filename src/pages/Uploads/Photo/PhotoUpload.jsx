@@ -1,90 +1,197 @@
+import { Button, Checkbox, Form, Input, Select } from "antd";
 import React from "react";
-import FolderUp from "../../../components/Icons/FolderUp/FolderUp";
-import { useFormFile } from "../../../hooks/fileField";
-import { useFormField } from "../../../hooks/formField";
-import { useProduct } from "../../../hooks/product";
-import InputField from "../InputField";
-import UploadFileField from "../UploadFileField";
-
-export default function PhotoUpload() {
-  const tags = useFormField('');
-  const title = useFormField('');
-  const desc = useFormField('');
-  const category = useFormField('');
-  const thumbnailFile = useFormFile('');
-  const originalFile = useFormFile('');
-  const product = useProduct();
-
-
-
-  function submit(event) {
+import { useDispatch, useSelector } from "react-redux";
+import TagInput from "../../../components/TagInput/tagInput";
+import FileInput from "../../../components/FileInput/fileInput";
+import { createProduct } from "../../../store/reducers/ProductSlice";
+import { Col, Row } from 'antd';
+const PhotoUpload = () => {
+  const [form] = Form.useForm();
+  const Categories = useSelector((state) => state.product.categories);
+  const dispatch = useDispatch();
+  const onFinish = (values) => {
+    const data = new FormData();
+    for(let key in values) {
+      data.append(key, values[key])
+    }
+    data.set('public_assets', values.public_assets[0].originFileObj, values.public_assets[0].name)
+    data.set('private_assets', values.private_assets[0].originFileObj, values.private_assets[0].name);
+    data.append('type', 'image');
+    dispatch(createProduct({data, reset: form.resetFields}));
     event.preventDefault();
-    const form = new FormData()
-    form.append('private_assets', originalFile.files[0], originalFile.files[0].name);
-    form.append('public_assets', thumbnailFile.files[0], thumbnailFile.files[0].name);
-    form.append('title', title.value);
-    form.append('tags', tags.value);
-    form.append('category', category.value);
-    form.append('description', desc.value);
-    product.addImage(form).then(res => {
-      tags.reset();
-      title.reset();
-      desc.reset();
-      category.reset();
-      thumbnailFile.reset();
-      originalFile.reset();
-    });
-  }
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
   return (
-    <div className=" px-10 pt-12 pb-5 ">
-      <h1 className="text-2xl font-bold">UPLOAD NEW PHOTO</h1>
-      <p className="trackig-wide text-xl mt-3 font-normal">
-        All fields are mandatory
-      </p>
-      <form className="space-y-5 mt-5" onSubmit={submit}>
-        {/* <InputField
-          label="ID"
-          placeholder="Automatically generated ID (6-8 digit)"
-        /> */}
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-          <div className="flex flex-col gap-2">
-            <InputField label="Category" placeholder={"Category of Photo"}  {...category}/>
-          </div>
+    <Form
+      layout="vertical"
+      form={form}
+      name="basic"
+      
+      initialValues={{
+        remember: true,
+      }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      autoComplete="off"
+    >
+      <Row gutter={[16, 16]}>
+        <Col span={12}>
+          <Form.Item
+            label="Title"
+            name="title"
+            rules={[
+              {
+                required: true,
+                message: "Please add title !",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            label="Description"
+            name="description"
+            rules={[
+              {
+                required: true,
+                message: "Please add description !",
+              },
+            ]}
+          >
+          <Input />
+          </Form.Item>
+        </Col>
+      </Row>
+      
 
-          <InputField
+      
+      <Row gutter={[16, 16]}>
+        <Col span={12}>
+          <Form.Item
+            label="Category"
+            name="categoryId"
+            rules={[
+              {
+                required: true,
+                message: "Please Select a category !",
+              },
+            ]}
+            >
+            <Select
+      
+              options={Categories.map((catg) => ({
+                label: catg.title,
+                value: catg.id,
+              }))}
+            />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
             label="Tags"
-            placeholder={"Upto 10 Tags Separated by Comma"}
-            {...tags}
-          />
-          <InputField label="Photo Title" placeholder={"Title of Photo"}  {...title}/>
-          <InputField
-            {...desc}
-            label="Photo Description"
-            placeholder={"Description of Photo"}
-          />
-        </div>
-        {/* <InputField
-          label={"Photo Resolution"}
-          placeholder="1280 X 1920 (Admin will Type the Resolution)"
-        /> */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <UploadFileField {...thumbnailFile}
-            label={"Upload Thumbnail (with Watermark)"}
-            Icon={FolderUp} 
-            type='image'
-          />
-          <UploadFileField {...originalFile}
-            label={"Upload Photo (without Watermark)"}
-            Icon={FolderUp}
-            type='image'
-          />
-        </div>
-        <div className="flex justify-center ">
-          <button type="submit" className=" bg-blue-600 mt-12 py-3 px-5 text-white rounded-md font-medium">
-            UPLOAD
-          </button>
-        </div>
-      </form>
-    </div>
+            name="tags"
+            rules={[
+              {
+                required: true,
+                message: "Please add tags !",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Form.Item
+        label="Resolution"
+        name="resolution"
+        rules={[
+          {
+            required: true,
+            message: "Please add resolution !",
+          },
+        ]}
+      >
+        <Input placeholder="1280 X 1920 ..."/>
+      </Form.Item>
+
+      <Row gutter={[16, 16]} justify="center">
+        <Col span={12}>
+          <Form.Item
+            label="Thumnail image with watermark"
+            name="public_assets"
+            valuePropName="fileList"
+            getValueFromEvent={(event) => {
+              return event.fileList;
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please add a file !",
+              },
+              {
+                validator(_, fileList) {
+                  return new Promise((resolve, reject) => {
+                    if (fileList && fileList[0]?.size > 10 * 1024 * 1024) {
+                      reject("File size exceeded !");
+                    } else {
+                      resolve("success");
+                    }
+                  });
+                },
+              },
+            ]}
+          >
+            <FileInput />
+          </Form.Item>
+        </Col>
+        <Col span={12} justify={'center'}>
+          <Form.Item
+          label="Original image "
+          name="private_assets"
+          valuePropName="fileList"
+          getValueFromEvent={(event) => {
+            return event.fileList;
+          }}
+          rules={[
+            {
+              required: true,
+              message: "Please add a file !",
+            },
+            {
+              validator(_, fileList) {
+                return new Promise((resolve, reject) => {
+                  if (fileList && fileList[0]?.size > 10 * 1024 * 1024) {
+                    reject("File size exceeded !");
+                  } else {
+                    resolve("success");
+                  }
+                });
+              },
+            },
+          ]}
+        >
+          <FileInput />
+          </Form.Item>
+        </Col>
+      </Row>
+      
+
+      <Row justify={'center'}>
+        <Form.Item
+          style={{marginTop: '16px', padding: '0 64px'}}
+        >
+          <Button type="primary" htmlType="submit" block>
+            Upload
+          </Button>
+        </Form.Item>
+      </Row>
+      
+    </Form>
   );
-}
+};
+export default PhotoUpload;

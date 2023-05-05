@@ -3,11 +3,10 @@ import { Button, Input, Space, Table } from 'antd';
 import { useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { useDispatch, useSelector } from "react-redux";
-import { deleteProduct } from "../../../store/reducers/ProductSlice";
+import { deleteProductCategory } from '../../store/reducers/ProductSlice';
+export default function GetCategoryList() {
 
-export default function AllVideos() {
-
-  const videos = useSelector(state => state.product.videos)
+  const categories = useSelector(state => state.product.categories)
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -130,28 +129,16 @@ export default function AllVideos() {
       ...getColumnSearchProps('title'),
     },
     {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
-      ...getColumnSearchProps('description'),
-    },
-    {
-      title: 'Tags',
-      dataIndex: 'tags',
-      key: 'tags',
-      ...getColumnSearchProps('tags'),
-    },
-    {
-      title: 'ThumbNail',
-      dataIndex: 'public',
-      key: 'public',
+      title: 'Image',
+      dataIndex: 'img',
+      key: 'img',
     },
     {
       title: 'Action',
       dataIndex: '',
       key: 'x',
-      render: (text, record) => <Button type="primary" onClick={() => dispatch(deleteProduct(record.id))} icon={<DeleteOutlined />} />,
+      render: (text, record) => <Button type="primary" onClick={() => dispatch(deleteProductCategory(record.id))} icon={<DeleteOutlined />} />,
     }
   ];
-  return <Table columns={columns} dataSource={videos} />;
+  return <Table columns={columns} dataSource={categories} />;
 };

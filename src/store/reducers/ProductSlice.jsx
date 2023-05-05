@@ -34,11 +34,13 @@ export const getAllVideos = createAsyncThunk(
 
 export const createProduct = createAsyncThunk(
   'product/add',
-  async (data, { rejectWithValue }) => {
+  async ({data, reset}, { rejectWithValue }) => {
     try {
       await Product.createProduct(data)
-      const response = await Product.getImages();
+      reset();
+      const response  = data.get('type') === 'image' ? await Product.getImages() : await Product.getVideos();
       return {[data.type]: response.data};
+
       
     } catch(error) {
       if (!error.response) {
@@ -85,9 +87,9 @@ export const updateProduct = createAsyncThunk(
 
 export const getProductCategories = createAsyncThunk(
   'product/get/Category',
-  async ({id, data}, { rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
-      const response = await Product.getCategoryt();
+      const response = await Product.getCategory();
       return response.data
     } catch(error) {
       if (!error.response) {
@@ -117,13 +119,30 @@ export const createProductCategory = createAsyncThunk(
   }
 )
 
+export const deleteProductCategory = createAsyncThunk(
+  'product/delete/category',
+  async (id, { rejectWithValue }) => {
+    try {
+      await Product.deleteProductCategory(id)
+      const response = await Product.getCategory();
+      return response.data;
+      
+    } catch(error) {
+      if (!error.response) {
+        throw err
+      }
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
 
 export const AdminSlice = createSlice({
     name: 'product',
     initialState:{
       images: [], 
       videos: [],
-      categories: [],
+      categories: [{title: 'car', id: 'car'}],
       error: undefined,
       isCreating: false,
       isDeleting: false
@@ -163,18 +182,17 @@ export const AdminSlice = createSlice({
       })
       builder.addCase(createProduct.fulfilled, (state, action) => {
         state.isCreating = false
-        return state;
-      })
-      builder.addCase(createProduct.pending, (state, action) => {
-        state.isCreating = true;
-
         if (action.payload.image) {
           state.images = action.payload.image
         }
 
         if (action.payload.video) {
-          state.videos = action.payload.video
+          state.video = action.payload.video
         }
+        return state;
+      })
+      builder.addCase(createProduct.pending, (state, action) => {
+        state.isCreating = true;
         return state;
       })
       builder.addCase(createProduct.rejected, (state, action) => {
@@ -218,6 +236,11 @@ export const AdminSlice = createSlice({
         return state;
       })
       builder.addCase(createProductCategory.fulfilled, (state, action) => {
+        state.categories = action.payload
+        return state;
+      })
+      builder.addCase(deleteProductCategory.fulfilled, (state, action) => {
+        state.categories = action.payload;
         return state;
       })
     },

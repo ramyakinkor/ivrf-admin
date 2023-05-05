@@ -2,28 +2,16 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
-import PhotoUpload from "./pages/Uploads/Photo/PhotoUpload";
-import UploadVideo from "./pages/Uploads/Video/UploadVideo";
-import OrderHistory from "./pages/OrderHistory/OrderHistory";
-import AllPhotos from "./pages/All/Photos/AllPhotos";
-import AllVideos from "./pages/All/Videos/AllVideos";
-import User from "./pages/Users/User";
-import Settings from "./pages/settings/Settings";
-import EditVideo from "./pages/Edit/Video/EditVideo";
-import EditPhoto from "./pages/Edit/Photo/EditPhoto";
-import ViewReceipt from "./pages/ViewReceipt/ViewReceipt";
 import { environments } from "./hooks/environments";
 import { useDispatch } from "react-redux";
 import { getProfile } from "./store/reducers/AdminSlice";
-import { getAllImages, getAllVideos } from "./store/reducers/ProductSlice";
-import Category from "./pages/Category/category";
+import { getAllImages, getAllVideos, getProductCategories } from "./store/reducers/ProductSlice";
+import { routes } from "./routes/routes";
 
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getProfile());
-    dispatch(getAllImages());
-    dispatch(getAllVideos());
   }, [])
   return (
     <React.StrictMode >
@@ -32,17 +20,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />}>
-          <Route path="/" element={<PhotoUpload />} />
-          <Route path="upload-video" element={<UploadVideo />} />
-          <Route path="order-history" element={<OrderHistory />} />
-          <Route path="all-photos" element={<AllPhotos />} />
-          <Route path="all-videos" element={<AllVideos />} />
-          <Route path="users" element={<User />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="edit-video" element={<EditVideo />} />
-          <Route path="edit-photo" element={<EditPhoto />} />
-          <Route path="view-receipt" element={<ViewReceipt />} />
-          <Route path="category" element={<Category />} />
+          {routes.map(route => <Route path={route.url} element={<route.component/>} />)}
         </Route>
       </Routes>
     </Router>

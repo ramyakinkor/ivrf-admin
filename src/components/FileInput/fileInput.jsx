@@ -1,7 +1,8 @@
 
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
 import { Modal, Upload, Button } from 'antd';
 import { useState } from 'react';
+import './fileInput.css';
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -22,11 +23,21 @@ const FileInput = ({fileList = [], onChange}) => {
     setPreviewOpen(true);
     setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
   };
+  const uploadButtonPictureCard = (
+    <div>
+      <UploadOutlined />
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
+
+  const uploadButtonPicture = (
+    <Button icon={<UploadOutlined />}>Upload</Button>
+  )
   return (
     <>
      
-      <Upload
-        listType="picture"
+      <Upload style={{width: '100%'}}
+        listType="picture-card"
         beforeUpload={(file) => {
             return false
         }}
@@ -35,7 +46,7 @@ const FileInput = ({fileList = [], onChange}) => {
         onPreview={handlePreview}
         maxCount={1}
       >
-        {fileList.length >= 1 ? null : <Button icon={<UploadOutlined />}>Upload</Button>}
+        {fileList.length >= 1 ? null : uploadButtonPictureCard}
       </Upload>
       <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
         <img

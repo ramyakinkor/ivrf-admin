@@ -1,7 +1,8 @@
 import { Button, Card, Form, Input } from "antd";
-import FileInput from "../../components/FileUploader/fileUploader";
+import FileInput from "../../components/FileInput/fileInput";
 import { useDispatch } from "react-redux";
 import { createProductCategory } from "../../store/reducers/ProductSlice";
+import GetCategoryList from "./cagetogryList";
 export default function Category() {
 	const [form] = Form.useForm();
 	const dispatch = useDispatch()
@@ -17,6 +18,7 @@ export default function Category() {
 		console.log('Failed:', errorInfo);
 	};
   return (
+	<>
 		<Card>
 			<Form
 			form={form}
@@ -90,6 +92,8 @@ export default function Category() {
 				</Form.Item>
 			</Form>
 		</Card>
+		<GetCategoryList/>
+	</>
   );
 }
 

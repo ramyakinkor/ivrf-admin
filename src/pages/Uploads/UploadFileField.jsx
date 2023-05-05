@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import ExtendedView from "../../components/ExtendView/ExtendedView";
-import ExtendIcon from "../../components/Icons/Extend/ExtendIcon";
 
 export default function UploadFileField({
   label,
@@ -69,19 +67,11 @@ export default function UploadFileField({
             onClick={OnOpenModal}
             className="inline-block absolute z-10 select-none cursor-pointer p-2 bg-slate-200 bottom-0 right-0"
           >
-            <ExtendIcon height={30} width={30} />
+            {/* <ExtendIcon height={30} width={30} /> */}
           </span>
         )}
       </div>
-      {open && (
-        <ExtendedView
-          closeDuration={400}
-          open={open}
-          onClose={OnCloseModal}
-          file={files[0]}
-          type={type}
-        />
-      )}
+
     </>
   );
 }
