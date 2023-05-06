@@ -172,6 +172,13 @@ export default function AllVideos() {
       editable: true
     },
     {
+      title: 'Resolution',
+      dataIndex: 'resolution',
+      key: 'resolution',
+      ...getColumnSearchProps('resolution'),
+      editable: true
+    },
+    {
       title: 'ThumbNail',
       dataIndex: 'public',
       key: 'public',

@@ -171,6 +171,13 @@ export default function AllPhotos() {
       editable: true
     },
     {
+      title: 'Resolution',
+      dataIndex: 'resolution',
+      key: 'resolution',
+      ...getColumnSearchProps('resolution'),
+      editable: true
+    },
+    {
       title: 'ThumbNail',
       dataIndex: 'public',
       key: 'public',
