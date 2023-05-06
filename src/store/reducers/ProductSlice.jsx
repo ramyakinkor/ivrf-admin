@@ -73,9 +73,11 @@ export const updateProduct = createAsyncThunk(
   'product/update',
   async ({id, data}, { rejectWithValue }) => {
     try {
-      const response = await Product.updateProduct(id, data);
-      return response.data
+      await Product.updateProduct(id, data);
+      const response  = data['type'] === 'image' ? await Product.getImages() : await Product.getVideos()
+      return {[data.type]: response.data};
     } catch(error) {
+      console.log(error);
       if (!error.response) {
         throw err
       }
@@ -142,7 +144,7 @@ export const AdminSlice = createSlice({
     initialState:{
       images: [], 
       videos: [],
-      categories: [{title: 'car', id: 'car'}],
+      categories: [],
       error: undefined,
       isCreating: false,
       isDeleting: false
@@ -187,7 +189,7 @@ export const AdminSlice = createSlice({
         }
 
         if (action.payload.video) {
-          state.video = action.payload.video
+          state.videos = action.payload.video
         }
         return state;
       })
@@ -241,6 +243,16 @@ export const AdminSlice = createSlice({
       })
       builder.addCase(deleteProductCategory.fulfilled, (state, action) => {
         state.categories = action.payload;
+        return state;
+      })
+      builder.addCase(updateProduct.fulfilled, (state, action) => {
+        if (action.payload.image) {
+          state.images = action.payload.image
+        }
+
+        if (action.payload.video) {
+          state.videos = action.payload.video
+        }
         return state;
       })
     },
