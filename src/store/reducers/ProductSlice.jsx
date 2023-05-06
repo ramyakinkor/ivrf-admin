@@ -34,9 +34,9 @@ export const getAllVideos = createAsyncThunk(
 
 export const createProduct = createAsyncThunk(
   'product/add',
-  async ({data, reset}, { rejectWithValue }) => {
+  async ({data, reset, progress}, { rejectWithValue }) => {
     try {
-      await Product.createProduct(data)
+      await Product.createProduct(data, progress)
       reset();
       const response  = data.get('type') === 'image' ? await Product.getImages() : await Product.getVideos();
       return {[data.type]: response.data};

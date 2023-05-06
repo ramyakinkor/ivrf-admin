@@ -32,7 +32,7 @@ const Home = () => {
   } = theme.useToken();
   return (
     <>
-    {true ? (
+    {profile ? (
       <Layout style={{height: '100vh'}}>
         <Sider trigger={null} collapsible collapsed={collapsed}>
           <div className="logo" />

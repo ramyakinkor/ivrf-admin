@@ -12,7 +12,7 @@ const getBase64 = (file) =>
   });
 const FileInput = ({fileList = [], onChange}) => {
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
+  const [previewUrl, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
@@ -49,15 +49,20 @@ const FileInput = ({fileList = [], onChange}) => {
         {fileList.length >= 1 ? null : uploadButtonPictureCard}
       </Upload>
       <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
-        <img
+         <img
           alt="example"
           style={{
             width: '100%',
           }}
-          src={previewImage}
+          src={previewUrl}
         />
       </Modal>
     </>
   );
 };
 export default FileInput;
+
+
+function isVideo(previewUrl) {
+  console.log(previewUrl)
+}

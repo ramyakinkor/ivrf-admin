@@ -24,8 +24,8 @@ export default class Product {
     return axios.delete(deleteUrl)
   }
 
-  static createProduct(data) {
-    return data.get('type') === 'image' ? axios.post(CONSTANTS.CREATE_IMAGE, data, { "Content-Type": "multipart/form-data" }) : axios.post(CONSTANTS.CREATE_VIDEO, data, { "Content-Type": "multipart/form-data" });
+  static createProduct(data, progress) {
+    return data.get('type') === 'image' ? axios.post(CONSTANTS.CREATE_IMAGE, data, { "Content-Type": "multipart/form-data", onUploadProgress: progress}) : axios.post(CONSTANTS.CREATE_VIDEO, data, { "Content-Type": "multipart/form-data" , onUploadProgress: progress});
     
   }
 
