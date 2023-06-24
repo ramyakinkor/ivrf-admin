@@ -151,8 +151,8 @@ const VideoUpload = () => {
             {
               validator(_, fileList) {
                 return new Promise((resolve, reject) => {
-                  if (fileList && fileList[0]?.size > 10 * 1024 * 1024) {
-                    reject("File size exceeded !");
+                  if (fileList && fileList[0]?.size > 2 * 1024 * 1024) {
+                    reject("File size exceeded 2MB!");
                   } else {
                     resolve("success");
                   }
@@ -180,7 +180,7 @@ const VideoUpload = () => {
             {
               validator(_, fileList) {
                 return new Promise((resolve, reject) => {
-                  if (fileList && fileList[0]?.size > 10 * 1024 * 1024) {
+                  if (fileList && fileList[0]?.size > 800 * 1024 * 1024) {
                     reject("File size exceeded !");
                   } else {
                     resolve("success");

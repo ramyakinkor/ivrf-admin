@@ -158,8 +158,8 @@ const PhotoUpload = () => {
               {
                 validator(_, fileList) {
                   return new Promise((resolve, reject) => {
-                    if (fileList && fileList[0]?.size > 10 * 1024 * 1024) {
-                      reject("File size exceeded !");
+                    if (fileList && fileList[0]?.size >  120 * 1024 ) {
+                      reject("File size exceeded 100KB !");
                     } else {
                       resolve("success");
                     }
@@ -187,8 +187,8 @@ const PhotoUpload = () => {
             {
               validator(_, fileList) {
                 return new Promise((resolve, reject) => {
-                  if (fileList && fileList[0]?.size > 10 * 1024 * 1024) {
-                    reject("File size exceeded !");
+                  if (fileList && fileList[0]?.size > 500 * 1024 * 1024) {
+                    reject("File size exceeded 500MB!");
                   } else {
                     resolve("success");
                   }
