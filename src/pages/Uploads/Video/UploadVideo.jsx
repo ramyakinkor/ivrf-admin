@@ -135,7 +135,36 @@ const VideoUpload = () => {
       </Form.Item>
       
       <Row gutter={[16, 16]}>
-        <Col span={12}>
+        <Col span={8}>
+            <Form.Item
+            label="Thumbnail Image"
+            name="thumbnail"
+            valuePropName="fileList"
+            getValueFromEvent={(event) => {
+              return event.fileList;
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please add a file !",
+              },
+              {
+                validator(_, fileList) {
+                  return new Promise((resolve, reject) => {
+                    if (fileList && fileList[0]?.size > 100 * 1024 ) {
+                      reject("File size exceeded 100KB!");
+                    } else {
+                      resolve("success");
+                    }
+                  });
+                },
+              },
+            ]}
+          >
+            <FileInput />
+            </Form.Item>
+        </Col>
+        <Col span={8}>
           <Form.Item
           label="Video with watermark"
           name="public_assets"
@@ -164,7 +193,7 @@ const VideoUpload = () => {
           <FileInput />
           </Form.Item>
         </Col>
-        <Col span={12}>
+        <Col span={8}>
           <Form.Item
           label="Original video "
           name="private_assets"
